@@ -24,7 +24,6 @@ public class Game {
 
     private String title;
 
-    @Enumerated(EnumType.STRING)
     private Platform platform;
 
     @ManyToOne
