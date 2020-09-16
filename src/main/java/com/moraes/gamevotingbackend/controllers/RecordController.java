@@ -4,14 +4,15 @@ import com.moraes.gamevotingbackend.dto.RecordDTO;
 import com.moraes.gamevotingbackend.dto.RecordPostDTO;
 import com.moraes.gamevotingbackend.services.interfaces.RecordService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Instant;
 
 @AllArgsConstructor
 @RestController
@@ -19,6 +20,27 @@ import java.net.URI;
 public class RecordController {
 
     private final RecordService service;
+
+    @GetMapping
+    public ResponseEntity<Page<RecordDTO>> findAll(
+            @RequestParam(value = "min", defaultValue = "") String min,
+            @RequestParam(value = "max", defaultValue = "") String max,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "linesPerPage", defaultValue = "0") Integer linesPerPage,
+            @RequestParam(value = "orderBy", defaultValue = "moment") String orderBy,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
+
+        Instant minDate = ("".equals(min)) ? null : Instant.parse(min);
+        Instant maxDate = ("".equals(max)) ? null : Instant.parse(max);
+
+        if (linesPerPage == 0) {
+            linesPerPage = Integer.MAX_VALUE;
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+        return ResponseEntity.ok(service.findByMoment(minDate, maxDate, pageRequest));
+    }
 
     @PostMapping
     public ResponseEntity<RecordDTO> save(@RequestBody RecordPostDTO recordPostDTO) {

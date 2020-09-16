@@ -8,6 +8,8 @@ import com.moraes.gamevotingbackend.repositories.GameRepository;
 import com.moraes.gamevotingbackend.repositories.RecordRepository;
 import com.moraes.gamevotingbackend.services.interfaces.RecordService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,13 @@ public class RecordServiceImpl implements RecordService {
 
     private final RecordRepository repository;
     private final GameRepository gameRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecordDTO> findByMoment(Instant minDate, Instant maxDate, PageRequest pageRequest) {
+        return repository.findByMoment(minDate, maxDate, pageRequest)
+                .map(RecordDTO::new);
+    }
 
     @Override
     @Transactional
