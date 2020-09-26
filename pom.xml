@@ -12,7 +12,7 @@
     <artifactId>game-voting-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>game-voting-backend</name>
-    <description>Game voting application backend with Java and Spring Boot</description>
+    <description>Game voting application back-end with Java and Spring Boot</description>
 
     <properties>
         <java.version>11</java.version>
@@ -36,6 +36,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

@@ -3,6 +3,7 @@ package com.moraes.gamevotingbackend.controllers;
 import com.moraes.gamevotingbackend.dto.RecordDTO;
 import com.moraes.gamevotingbackend.dto.RecordPostDTO;
 import com.moraes.gamevotingbackend.services.interfaces.RecordService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ public class RecordController {
 
     private final RecordService service;
 
+    @ApiOperation(value = "Find all records")
     @GetMapping
     public ResponseEntity<Page<RecordDTO>> findAll(
             @RequestParam(value = "min", defaultValue = "") String min,
@@ -42,6 +44,7 @@ public class RecordController {
         return ResponseEntity.ok(service.findByMoment(minDate, maxDate, pageRequest));
     }
 
+    @ApiOperation(value = "Save a new record")
     @PostMapping
     public ResponseEntity<RecordDTO> save(@RequestBody RecordPostDTO recordPostDTO) {
         RecordDTO recordDTO = service.save(recordPostDTO);
